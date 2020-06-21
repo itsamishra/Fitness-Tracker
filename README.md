@@ -2,7 +2,7 @@
 
 ## Description
 
-- A webapp that allows users to track
+- A webapp that allows users to track their fitness data (workouts, weigh-ins, calories, etc.)
 
 ## Technologies
 
