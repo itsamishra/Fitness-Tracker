@@ -12,6 +12,5 @@
 
 ## TODO
 
-- [ ] Add "Create Account" button (deactivated)
-- [ ] Implement account login
-- [ ] Implement account login persistance
+- [ ] Create 'login' & 'authenticate-login' endpoints
+- [ ] Add "Create Account" button (deactivated) and "Log In" button (activated)
