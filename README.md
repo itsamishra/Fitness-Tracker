@@ -12,5 +12,5 @@
 
 ## TODO
 
-- [ ] Create 'authenticate-login' endpoint
+- [x] Create 'authenticate-login' endpoint
 - [ ] Add "Create Account" button (deactivated) and "Log In" button (activated)
