@@ -2,6 +2,13 @@ const express = require("express");
 const app = express();
 const port = process.env.PORT || 4000;
 const path = require("path");
+let { Sequelize, sequelize, Account } = require("./models/index");
+
+Account.findAll().then((accounts) => {
+  console.log(`All accounts: ${JSON.stringify(accounts)}`);
+});
+
+// console.log(sequelize);
 
 // Allows us to serve static react file from build/ directory
 app.use(express.static(path.join(__dirname, "build")));
