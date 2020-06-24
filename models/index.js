@@ -34,6 +34,25 @@ const Account = sequelize.define(
   }
 );
 
+const CalorieCount = sequelize.define("calorie_count", {
+  username: {
+    type: Sequelize.STRING,
+    references: {
+      model: "accounts",
+      key: "username",
+    },
+    allowNull: false,
+  },
+  calories: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+  },
+  date: {
+    type: Sequelize.DATE,
+    allowNull: false,
+  },
+});
+
 sequelize.sync({ force: false });
 
-module.exports = { Sequelize, sequelize, Account };
+module.exports = { Sequelize, sequelize, Account, CalorieCount };
