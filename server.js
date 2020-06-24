@@ -4,7 +4,6 @@ const port = process.env.PORT || 4000;
 const path = require("path");
 const md5 = require("md5");
 let { Sequelize, sequelize, Account } = require("./models/index");
-const { debug } = require("console");
 
 // Account.findAll()
 //   .then((accounts) => {
