@@ -1,10 +1,19 @@
 import React, { Component } from "react";
 
 export class Landing extends Component {
+  calorieCounterButtonClickHandler = () => {
+    this.props.displayCalorieCounter();
+  };
+
   render() {
     return (
       <div>
-        <button style={buttonStyle}>Calorie Counter</button>
+        <button
+          style={buttonStyle}
+          onClick={this.calorieCounterButtonClickHandler}
+        >
+          Calorie Counter
+        </button>
         <br />
         <br />
         <button style={buttonStyle}>Fitness Tracker</button>

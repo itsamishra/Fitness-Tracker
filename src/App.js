@@ -3,6 +3,7 @@ import Header from "./components/Header";
 import LoginPage from "./components/LoginPage";
 import axios from "axios";
 import Landing from "./components/Landing";
+import CalorieCounter from "./components/CalorieCounter";
 
 export class App extends Component {
   state = {
@@ -27,12 +28,21 @@ export class App extends Component {
 
             if (loginStatus === true) {
               this.setState({
-                body: <Landing />,
+                body: (
+                  <Landing displayCalorieCounter={this.displayCalorieCounter} />
+                ),
               });
             }
           });
       }
     );
+  };
+
+  displayCalorieCounter = () => {
+    console.log("TEST");
+    this.setState({
+      body: <CalorieCounter />,
+    });
   };
 
   componentDidMount() {
