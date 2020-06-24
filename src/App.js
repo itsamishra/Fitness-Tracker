@@ -13,11 +13,13 @@ export class App extends Component {
   };
 
   sendLoginAttempt = (newUsername, newPassword) => {
+    // Updates state with new username and password
     this.setState(
       {
         username: newUsername,
         password: newPassword,
       },
+      // Checks to see if username & password are valid
       () => {
         axios
           .get(
@@ -26,6 +28,7 @@ export class App extends Component {
           .then((res) => {
             let loginStatus = res.data;
 
+            // If login is successful, shows landing page
             if (loginStatus === true) {
               this.setState({
                 body: (
