@@ -4,10 +4,17 @@ const port = process.env.PORT || 4000;
 const path = require("path");
 const md5 = require("md5");
 let { Sequelize, sequelize, Account } = require("./models/index");
+const { debug } = require("console");
 
-Account.findAll().then((accounts) => {
-  console.log(`All accounts: ${JSON.stringify(accounts)}`);
-});
+// Account.findAll()
+//   .then((accounts) => {
+//     console.log(`All accounts: ${JSON.stringify(accounts)}`);
+//     return Account.findAll();
+//   })
+//   .then((accounts) => {
+//     console.log("DONE!!!");
+//     console.log(JSON.stringify(accounts));
+//   });
 
 // console.log(sequelize);
 
@@ -23,12 +30,18 @@ app.get("/", (req, res) => {
 app.get("/authenticate-login", (req, res) => {
   let { username, password } = req.query;
 
-  Account.findByPk(username).then((account) => {
-    let { salt, md5_hashed_password } = account.dataValues;
-    let loginSuccessful = md5(password + salt) === md5_hashed_password;
+  Account.findByPk(username)
+    // If query succeeds, checks to see if username & password are correct
+    .then((account) => {
+      let { salt, md5_hashed_password } = account.dataValues;
+      let loginSuccessful = md5(password + salt) === md5_hashed_password;
 
-    res.send(loginSuccessful);
-  });
+      res.send(loginSuccessful);
+    })
+    // If query fails then login fails
+    .catch((err) => {
+      res.send(false);
+    });
 });
 
 app.listen(port, () => {
