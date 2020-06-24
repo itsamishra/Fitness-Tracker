@@ -14,4 +14,6 @@
 
 - [x] Create 'authenticate-login' endpoint
 - [x] Add "Create Account" button (deactivated) and "Log In" button (activated)
-- [ ] Add Calorie Counter component
+- [x] Add calorie_counts table via Sequelize
+- [ ] Create Insert component for CalorieCounter
+- [ ] Create Display component for CalorieCounter
