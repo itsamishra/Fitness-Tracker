@@ -13,4 +13,5 @@
 ## TODO
 
 - [x] Create 'authenticate-login' endpoint
-- [ ] Add "Create Account" button (deactivated) and "Log In" button (activated)
+- [x] Add "Create Account" button (deactivated) and "Log In" button (activated)
+- [ ] Add Calorie Counter component
