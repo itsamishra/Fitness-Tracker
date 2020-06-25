@@ -3,19 +3,8 @@ const app = express();
 const port = process.env.PORT || 4000;
 const path = require("path");
 const md5 = require("md5");
-let { Sequelize, sequelize, Account } = require("./models/index");
-
-// Account.findAll()
-//   .then((accounts) => {
-//     console.log(`All accounts: ${JSON.stringify(accounts)}`);
-//     return Account.findAll();
-//   })
-//   .then((accounts) => {
-//     console.log("DONE!!!");
-//     console.log(JSON.stringify(accounts));
-//   });
-
-// console.log(sequelize);
+let { Sequelize, sequelize, Account, CalorieCount } = require("./models/index");
+const axios = require("axios");
 
 // Allows us to serve static react file from build/ directory
 app.use(express.static(path.join(__dirname, "build")));
@@ -39,6 +28,34 @@ app.get("/authenticate-login", (req, res) => {
     })
     // If query fails then login fails
     .catch((err) => {
+      res.send(false);
+    });
+});
+
+app.get("/add-calorie-count", (req, res) => {
+  axios
+    // First ensures that login works with given username & password
+    .get(
+      `http://:${port}/authenticate-login?username=${req.query.username}&password=${req.query.password}`
+    )
+    .then((loginRes) => {
+      // If login fails, return false
+      if (loginRes.data === false) {
+        res.send(false);
+      }
+
+      return CalorieCount.create({
+        username: req.query.username,
+        calories: req.query.calorieCount,
+        date: req.query.date,
+      });
+    })
+    .then((insertRes) => {
+      console.log("Inserted!");
+      res.send(true);
+    })
+    .catch((err) => {
+      console.log(`ERROR: ${err}`);
       res.send(false);
     });
 });

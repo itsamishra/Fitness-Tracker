@@ -10,6 +10,7 @@ export class App extends Component {
     username: "",
     password: "",
     body: null,
+    development: true,
   };
 
   sendLoginAttempt = (newUsername, newPassword) => {
@@ -21,30 +22,60 @@ export class App extends Component {
       },
       // Checks to see if username & password are valid
       () => {
-        axios
-          .get(
-            `/authenticate-login?username=${this.state.username}&password=${this.state.password}`
-          )
-          .then((res) => {
-            let loginStatus = res.data;
+        // Logs in with "dummy" username & password if app is running in development mode
+        if (
+          this.state.development === true &&
+          newUsername === "dummy" &&
+          newPassword === "dummy"
+        ) {
+          this.displayLanding();
+        }
+        // If not running in development mode, tries to log in regularly
+        else {
+          axios
+            .get(
+              `/authenticate-login?username=${this.state.username}&password=${this.state.password}`
+            )
+            .then((res) => {
+              let loginStatus = res.data;
 
-            // If login is successful, shows landing page
-            if (loginStatus === true) {
-              this.setState({
-                body: (
-                  <Landing displayCalorieCounter={this.displayCalorieCounter} />
-                ),
-              });
-            }
-          });
+              // If login is successful, shows landing page
+              if (loginStatus === true) {
+                this.displayLanding();
+              }
+            });
+        }
       }
     );
   };
 
-  displayCalorieCounter = () => {
-    console.log("TEST");
+  // Adds new record to calorie_counts table
+  addNewCalorieCount = (calorieCount, date) => {
+    axios
+      .get(
+        `/add-calorie-count?username=${this.state.username}&password=${this.state.password}&calorieCount=${calorieCount}&date=${date}`
+      )
+      .then((res) => {
+        console.log(`Data Received: ${res.data}`);
+      });
+  };
+
+  // Displays Landing page
+  displayLanding = () => {
     this.setState({
-      body: <CalorieCounter />,
+      body: <Landing displayCalorieCounter={this.displayCalorieCounter} />,
+    });
+  };
+
+  // Displays Calorie Counter page
+  displayCalorieCounter = () => {
+    this.setState({
+      body: (
+        <CalorieCounter
+          displayLanding={this.displayLanding}
+          addNewCalorieCount={this.addNewCalorieCount}
+        />
+      ),
     });
   };
 
