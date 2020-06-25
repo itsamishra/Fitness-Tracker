@@ -51,11 +51,9 @@ app.get("/add-calorie-count", (req, res) => {
       });
     })
     .then((insertRes) => {
-      console.log("Inserted!");
       res.send(true);
     })
     .catch((err) => {
-      console.log(`ERROR: ${err}`);
       res.send(false);
     });
 });

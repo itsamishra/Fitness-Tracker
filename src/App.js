@@ -55,9 +55,7 @@ export class App extends Component {
       .get(
         `/add-calorie-count?username=${this.state.username}&password=${this.state.password}&calorieCount=${calorieCount}&date=${date}`
       )
-      .then((res) => {
-        console.log(`Data Received: ${res.data}`);
-      });
+      .then((res) => {});
   };
 
   // Displays Landing page
