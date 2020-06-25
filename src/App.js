@@ -51,11 +51,9 @@ export class App extends Component {
 
   // Adds new record to calorie_counts table
   addNewCalorieCount = (calorieCount, date) => {
-    axios
-      .get(
-        `/add-calorie-count?username=${this.state.username}&password=${this.state.password}&calorieCount=${calorieCount}&date=${date}`
-      )
-      .then((res) => {});
+    return axios.get(
+      `/add-calorie-count?username=${this.state.username}&password=${this.state.password}&calorieCount=${calorieCount}&date=${date}`
+    );
   };
 
   // Displays Landing page

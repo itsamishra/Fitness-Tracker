@@ -1,25 +1,45 @@
 import React, { Component } from "react";
 
 export class CalorieCounterInsert extends Component {
+  state = {
+    insertCaloriesMessage: "",
+    insertCaloriesMessageColor: "",
+  };
+
   submitCalorieCount = () => {
+    this.setState({
+      insertCaloriesMessage: "",
+      insertCaloriesMessageColor: "",
+    });
+
     let calorieCount = document.getElementById("calorie-input").value;
     let date = document.getElementById("date-input").value;
 
-    this.props.addNewCalorieCount(calorieCount, date);
+    this.props.addNewCalorieCount(calorieCount, date).then((res) => {
+      if (res.data === true) {
+        this.setState({
+          insertCaloriesMessage: "Record successfully inserted!",
+          insertCaloriesMessageColor: "green",
+        });
+      } else if (res.data === false) {
+        this.setState({
+          insertCaloriesMessage: "Record could not be inserted!",
+          insertCaloriesMessageColor: "red",
+        });
+      }
+    });
   };
 
   render() {
     return (
       <div>
         <h2 style={inputLabelStyle}>Insert Calories</h2>
+        <div style={{ color: this.state.insertCaloriesMessageColor }}>
+          <p style={messageStyle}>{this.state.insertCaloriesMessage}</p>
+        </div>
         <h3 style={inputLabelStyle}>Calories</h3>
         <div style={inputDivStyle}>
-          <input
-            id="calorie-input"
-            style={inputStyle}
-            type="number"
-            defaultValue="100"
-          />
+          <input id="calorie-input" style={inputStyle} type="number" />
         </div>
         <br />
         <h3 style={inputLabelStyle}>Date</h3>
@@ -66,6 +86,10 @@ const inputStyle = {
 const inputLabelStyle = {
   textAlign: "center",
   color: "#2F2FA2",
+};
+
+const messageStyle = {
+  textAlign: "center",
 };
 
 export default CalorieCounterInsert;
