@@ -7,14 +7,17 @@ export class CalorieCounterInsert extends Component {
   };
 
   submitCalorieCount = () => {
+    // Removes message
     this.setState({
       insertCaloriesMessage: "",
       insertCaloriesMessageColor: "",
     });
 
+    // Extracts parameters
     let calorieCount = document.getElementById("calorie-input").value;
     let date = document.getElementById("date-input").value;
 
+    // Attempts to insert record
     this.props.addNewCalorieCount(calorieCount, date).then((res) => {
       if (res.data === true) {
         this.setState({
