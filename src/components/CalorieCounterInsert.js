@@ -24,6 +24,7 @@ export class CalorieCounterInsert extends Component {
           insertCaloriesMessage: "Record successfully inserted!",
           insertCaloriesMessageColor: "green",
         });
+        document.getElementById("calorie-input").value = "";
       } else if (res.data === false) {
         this.setState({
           insertCaloriesMessage: "Record could not be inserted!",
@@ -51,7 +52,7 @@ export class CalorieCounterInsert extends Component {
             id="date-input"
             style={inputStyle}
             type="date"
-            defaultValue={new Date().toISOString().substring(0, 10)} // Adds today as default value
+            defaultValue={this.props.getDateXDaysBeforeToday(0)} // Adds today as default value
           />
         </div>
         <br />

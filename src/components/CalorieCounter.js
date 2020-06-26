@@ -12,10 +12,13 @@ export class CalorieCounter extends Component {
       <div>
         <CalorieCounterInsert
           addNewCalorieCount={this.props.addNewCalorieCount}
+          getDateXDaysBeforeToday={this.props.getDateXDaysBeforeToday}
         />
         <br />
         <br />
-        <CalorieCounterDisplay />
+        <CalorieCounterDisplay
+          getDateXDaysBeforeToday={this.props.getDateXDaysBeforeToday}
+        />
         <br />
         <br />
         <button style={buttonStyle} onClick={this.props.displayLanding}>

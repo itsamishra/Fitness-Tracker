@@ -56,6 +56,26 @@ export class App extends Component {
     );
   };
 
+  // Returns date "x" days before today's date
+  // Taken & updated from: https://www.w3resource.com/javascript-exercises/javascript-basic-exercise-3.php
+  getDateXDaysBeforeToday = (daysBefore) => {
+    let date = new Date();
+    date.setDate(date.getDate() - daysBefore);
+    let dd = date.getDate();
+
+    let mm = date.getMonth() + 1;
+    let yyyy = date.getFullYear();
+    if (dd < 10) {
+      dd = "0" + dd;
+    }
+
+    if (mm < 10) {
+      mm = "0" + mm;
+    }
+
+    return `${yyyy}-${mm}-${dd}`;
+  };
+
   // Displays Landing page
   displayLanding = () => {
     this.setState({
@@ -70,6 +90,7 @@ export class App extends Component {
         <CalorieCounter
           displayLanding={this.displayLanding}
           addNewCalorieCount={this.addNewCalorieCount}
+          getDateXDaysBeforeToday={this.getDateXDaysBeforeToday}
         />
       ),
     });
