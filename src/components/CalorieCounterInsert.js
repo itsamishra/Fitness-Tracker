@@ -6,6 +6,7 @@ export class CalorieCounterInsert extends Component {
     insertCaloriesMessageColor: "",
   };
 
+  // Submits calorie count entered by user
   submitCalorieCount = () => {
     // Removes message
     this.setState({
