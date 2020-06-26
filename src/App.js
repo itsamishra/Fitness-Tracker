@@ -14,6 +14,10 @@ export class App extends Component {
     development: true,
   };
 
+  getWeekCalorieTotal = () => {
+    return this.state.weekCalorieTotal;
+  };
+
   // Tries to log in
   sendLoginAttempt = (newUsername, newPassword) => {
     // Updates state with new username and password
@@ -90,34 +94,36 @@ export class App extends Component {
     }
 
     // Gets calories consumed in past week
-    axios
-      .get(
-        `/get-total-calories-by-dates?username=${
-          this.state.username
-        }&password=${this.state.password}&dateList=${encodeURI(
-          JSON.stringify(dateList)
-        )}`
-      )
-      // Updates state with new data
-      .then((res) => {
-        let totalCaloriesByDayObj = res.data;
+    return (
+      axios
+        .get(
+          `/get-total-calories-by-dates?username=${
+            this.state.username
+          }&password=${this.state.password}&dateList=${encodeURI(
+            JSON.stringify(dateList)
+          )}`
+        )
+        // Updates state with new data
+        .then((res) => {
+          let totalCaloriesByDayObj = res.data;
 
-        // Updates weekCalorieTotal object
-        for (let i in Object.keys(weekCalorieTotal)) {
-          let numCalories = totalCaloriesByDayObj[weekCalorieTotal[i].date];
-          if (numCalories === undefined) numCalories = 0;
+          // Updates weekCalorieTotal object
+          for (let i in Object.keys(weekCalorieTotal)) {
+            let numCalories = totalCaloriesByDayObj[weekCalorieTotal[i].date];
+            if (numCalories === undefined) numCalories = 0;
 
-          weekCalorieTotal[i].totalCalories = numCalories;
-        }
+            weekCalorieTotal[i].totalCalories = numCalories;
+          }
 
-        // Updates state
-        this.setState({
-          weekCalorieTotal: weekCalorieTotal,
-        });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+          // Updates state
+          this.setState({
+            weekCalorieTotal: weekCalorieTotal,
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+    );
   };
 
   // Displays Landing page
@@ -136,6 +142,7 @@ export class App extends Component {
           addNewCalorieCount={this.addNewCalorieCount}
           getDateXDaysBeforeToday={this.getDateXDaysBeforeToday}
           setCalorieTotalForWeek={this.setCalorieTotalForWeek}
+          getWeekCalorieTotal={this.getWeekCalorieTotal}
         />
       ),
     });
@@ -146,6 +153,8 @@ export class App extends Component {
     this.setState({
       body: <LoginPage sendLoginAttempt={this.sendLoginAttempt} />,
     });
+
+    this.setCalorieTotalForWeek();
   }
 
   render() {

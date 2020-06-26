@@ -1,15 +1,43 @@
 import React, { Component } from "react";
 
 export class CalorieCounterDisplay extends Component {
+  state = {
+    tableHeaders: [],
+    tableRow: [],
+  };
+
   componentDidMount() {
-    // console.log(this.props.getDateXDaysBeforeToday(6));
-    this.props.setCalorieTotalForWeek();
+    this.props.setCalorieTotalForWeek().then(() => {
+      // console.log(this.props.getWeekCalorieTotal());
+      let weekCalorieTotal = this.props.getWeekCalorieTotal();
+
+      let tableHeaders = [];
+      for (let i in Object.keys(weekCalorieTotal)) {
+        tableHeaders.push(<th>{weekCalorieTotal[i].date}</th>);
+      }
+      tableHeaders.reverse();
+
+      let tableRow = [];
+      for (let i in Object.keys(weekCalorieTotal)) {
+        tableRow.push(<td>{weekCalorieTotal[i].totalCalories}</td>);
+      }
+      tableRow.reverse();
+
+      this.setState({
+        tableHeaders: tableHeaders,
+        tableRow: tableRow,
+      });
+    });
   }
 
   render() {
     return (
       <div>
         <h2 style={inputLabelStyle}>View Calories</h2>
+        <table>
+          <tr>{this.state.tableHeaders}</tr>
+          <tr>{this.state.tableRow}</tr>
+        </table>
       </div>
     );
   }

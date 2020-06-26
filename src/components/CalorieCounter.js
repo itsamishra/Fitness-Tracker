@@ -19,6 +19,7 @@ export class CalorieCounter extends Component {
         <CalorieCounterDisplay
           getDateXDaysBeforeToday={this.props.getDateXDaysBeforeToday}
           setCalorieTotalForWeek={this.props.setCalorieTotalForWeek}
+          getWeekCalorieTotal={this.props.getWeekCalorieTotal}
         />
         <br />
         <br />
