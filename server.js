@@ -6,20 +6,18 @@ const md5 = require("md5");
 let { Sequelize, sequelize, Account, CalorieCount } = require("./models/index");
 const axios = require("axios");
 
-// CalorieCount.findAndCountAll({
+// CalorieCount.findAll({
+//   attributes: [
+//     [sequelize.fn("sum", sequelize.col("calories")), "total_calories"],
+//   ],
 //   where: {
 //     username: "amishra",
 //     date: "2020-06-25",
 //   },
-// })
-//   .then((calorieCounts) => {
-//     console.log("Results:");
-//     console.log(calorieCounts);
-//   })
-//   .catch((err) => {
-//     console.log(err);
-//     return null;
-//   });
+// }).then((retVal) => {
+//   console.log("Vals:");
+//   console.log(retVal[0].dataValues.total_calories);
+// });
 
 // Allows us to serve static react file from build/ directory
 app.use(express.static(path.join(__dirname, "build")));
@@ -47,6 +45,7 @@ app.get("/authenticate-login", (req, res) => {
     });
 });
 
+// Adds new record to calorie_counts table
 app.get("/add-calorie-count", (req, res) => {
   axios
     // First ensures that login works with given username & password
@@ -70,6 +69,47 @@ app.get("/add-calorie-count", (req, res) => {
     })
     .catch((err) => {
       res.send(false);
+    });
+});
+
+// Returns the total number of calories listed for a given date
+app.get("/get-date-calorie-total", (req, res) => {
+  // Authenticates user
+  axios
+    .get(
+      `http://:${port}/authenticate-login?username=${req.query.username}&password=${req.query.password}`
+    )
+    .then((loginRes) => {
+      // If login fails, return false
+      if (loginRes.data === false) {
+        res.send(false);
+      }
+
+      // Gets total number of calories for a given day
+      return CalorieCount.findAll({
+        attributes: [
+          [sequelize.fn("sum", sequelize.col("calories")), "total_calories"],
+        ],
+        where: {
+          username: req.query.username,
+          date: req.query.date,
+        },
+      });
+    })
+    // Returns result of query
+    .then((retVal) => {
+      // Parses total number of calories
+      let numCalories = retVal[0].dataValues.total_calories;
+      if (numCalories === null) {
+        numCalories = "0";
+      }
+
+      res.send(numCalories);
+    })
+    // If anything fails, return 0 calories by default
+    .catch((err) => {
+      console.log(err);
+      res.send("0");
     });
 });
 

@@ -10,9 +10,11 @@ export class App extends Component {
     username: "",
     password: "",
     body: null,
+    weekCalorieTotals: [],
     development: true,
   };
 
+  // Tries to log in
   sendLoginAttempt = (newUsername, newPassword) => {
     // Updates state with new username and password
     this.setState(
@@ -76,6 +78,16 @@ export class App extends Component {
     return `${yyyy}-${mm}-${dd}`;
   };
 
+  setCalorieTotalForWeek = () => {
+    let weekCalorieTotal = {};
+
+    for (let i = 0; i < 7; i++) {
+      let date = this.getDateXDaysBeforeToday(i);
+      // axios.get
+    }
+    console.log(weekCalorieTotal);
+  };
+
   // Displays Landing page
   displayLanding = () => {
     this.setState({
@@ -91,6 +103,7 @@ export class App extends Component {
           displayLanding={this.displayLanding}
           addNewCalorieCount={this.addNewCalorieCount}
           getDateXDaysBeforeToday={this.getDateXDaysBeforeToday}
+          setCalorieTotalForWeek={this.setCalorieTotalForWeek}
         />
       ),
     });
