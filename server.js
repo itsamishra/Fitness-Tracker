@@ -6,6 +6,21 @@ const md5 = require("md5");
 let { Sequelize, sequelize, Account, CalorieCount } = require("./models/index");
 const axios = require("axios");
 
+// CalorieCount.findAndCountAll({
+//   where: {
+//     username: "amishra",
+//     date: "2020-06-25",
+//   },
+// })
+//   .then((calorieCounts) => {
+//     console.log("Results:");
+//     console.log(calorieCounts);
+//   })
+//   .catch((err) => {
+//     console.log(err);
+//     return null;
+//   });
+
 // Allows us to serve static react file from build/ directory
 app.use(express.static(path.join(__dirname, "build")));
 
