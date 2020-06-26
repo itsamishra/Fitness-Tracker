@@ -10,7 +10,7 @@ export class App extends Component {
     username: "",
     password: "",
     body: null,
-    weekCalorieTotals: [],
+    weekCalorieTotal: {},
     development: true,
   };
 
@@ -80,12 +80,44 @@ export class App extends Component {
 
   setCalorieTotalForWeek = () => {
     let weekCalorieTotal = {};
+    let dateList = [];
 
+    // Creates list of dates for past week
     for (let i = 0; i < 7; i++) {
       let date = this.getDateXDaysBeforeToday(i);
-      // axios.get
+      weekCalorieTotal[i] = { date: date, totalCalories: 0 };
+      dateList.push(date);
     }
-    console.log(weekCalorieTotal);
+
+    // Gets calories consumed in past week
+    axios
+      .get(
+        `/get-total-calories-by-dates?username=${
+          this.state.username
+        }&password=${this.state.password}&dateList=${encodeURI(
+          JSON.stringify(dateList)
+        )}`
+      )
+      // Updates state with new data
+      .then((res) => {
+        let totalCaloriesByDayObj = res.data;
+
+        // Updates weekCalorieTotal object
+        for (let i in Object.keys(weekCalorieTotal)) {
+          let numCalories = totalCaloriesByDayObj[weekCalorieTotal[i].date];
+          if (numCalories === undefined) numCalories = 0;
+
+          weekCalorieTotal[i].totalCalories = numCalories;
+        }
+
+        // Updates state
+        this.setState({
+          weekCalorieTotal: weekCalorieTotal,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   // Displays Landing page

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 export class CalorieCounterDisplay extends Component {
   componentDidMount() {
-    console.log(this.props.getDateXDaysBeforeToday(6));
+    // console.log(this.props.getDateXDaysBeforeToday(6));
     this.props.setCalorieTotalForWeek();
   }
 

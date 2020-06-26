@@ -6,19 +6,6 @@ const md5 = require("md5");
 let { Sequelize, sequelize, Account, CalorieCount } = require("./models/index");
 const axios = require("axios");
 
-// CalorieCount.findAll({
-//   attributes: [
-//     [sequelize.fn("sum", sequelize.col("calories")), "total_calories"],
-//   ],
-//   where: {
-//     username: "amishra",
-//     date: "2020-06-25",
-//   },
-// }).then((retVal) => {
-//   console.log("Vals:");
-//   console.log(retVal[0].dataValues.total_calories);
-// });
-
 // Allows us to serve static react file from build/ directory
 app.use(express.static(path.join(__dirname, "build")));
 
@@ -72,8 +59,13 @@ app.get("/add-calorie-count", (req, res) => {
     });
 });
 
-// Returns the total number of calories listed for a given date
-app.get("/get-date-calorie-total", (req, res) => {
+// Gets total calories consumed by specified date(s)
+app.get("/get-total-calories-by-dates", (req, res) => {
+  let totalCaloriesByDay = {};
+
+  // Extracts dateList from parameters
+  let dateList = JSON.parse(decodeURI(req.query.dateList));
+
   // Authenticates user
   axios
     .get(
@@ -82,34 +74,35 @@ app.get("/get-date-calorie-total", (req, res) => {
     .then((loginRes) => {
       // If login fails, return false
       if (loginRes.data === false) {
-        res.send(false);
+        res.send(totalCaloriesByDay);
       }
 
-      // Gets total number of calories for a given day
+      // Executes query
       return CalorieCount.findAll({
         attributes: [
+          "date",
           [sequelize.fn("sum", sequelize.col("calories")), "total_calories"],
         ],
         where: {
           username: req.query.username,
-          date: req.query.date,
+          date: dateList,
         },
+        group: ["date"],
       });
     })
-    // Returns result of query
     .then((retVal) => {
-      // Parses total number of calories
-      let numCalories = retVal[0].dataValues.total_calories;
-      if (numCalories === null) {
-        numCalories = "0";
+      // Creates object containing total calories by day
+      for (let i = 0; i < retVal.length; i++) {
+        totalCaloriesByDay[retVal[i].dataValues.date] =
+          retVal[i].dataValues.total_calories;
       }
 
-      res.send(numCalories);
+      // Returns data
+      res.send(totalCaloriesByDay);
     })
-    // If anything fails, return 0 calories by default
     .catch((err) => {
       console.log(err);
-      res.send("0");
+      res.send(totalCaloriesByDay);
     });
 });
 
