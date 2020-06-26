@@ -1,42 +1,20 @@
 import React, { Component } from "react";
 
 export class CalorieCounterDisplay extends Component {
-  state = {
-    tableHeaders: [],
-    tableRow: [],
-  };
+  state = {};
 
   componentDidMount() {
-    this.props.setCalorieTotalForWeek().then(() => {
-      // console.log(this.props.getWeekCalorieTotal());
-      let weekCalorieTotal = this.props.getWeekCalorieTotal();
-
-      let tableHeaders = [];
-      for (let i in Object.keys(weekCalorieTotal)) {
-        tableHeaders.push(<th>{weekCalorieTotal[i].date}</th>);
-      }
-      tableHeaders.reverse();
-
-      let tableRow = [];
-      for (let i in Object.keys(weekCalorieTotal)) {
-        tableRow.push(<td>{weekCalorieTotal[i].totalCalories}</td>);
-      }
-      tableRow.reverse();
-
-      this.setState({
-        tableHeaders: tableHeaders,
-        tableRow: tableRow,
-      });
-    });
+    this.props.reloadTable();
   }
 
   render() {
     return (
       <div>
         <h2 style={inputLabelStyle}>View Calories</h2>
-        <table>
-          <tr>{this.state.tableHeaders}</tr>
-          <tr>{this.state.tableRow}</tr>
+
+        <table style={tableStyle}>
+          <tr style={trStyle}>{this.props.tableHeaders}</tr>
+          <tr style={trStyle}>{this.props.tableRow}</tr>
         </table>
       </div>
     );
@@ -46,6 +24,18 @@ export class CalorieCounterDisplay extends Component {
 const inputLabelStyle = {
   textAlign: "center",
   color: "#2F2FA2",
+};
+
+const tableStyle = {
+  marginLeft: "auto",
+  marginRight: "auto",
+  border: "1px solid black",
+  borderCollapse: "collapse",
+};
+
+const trStyle = {
+  border: "1px solid black",
+  textAlign: "center",
 };
 
 export default CalorieCounterDisplay;

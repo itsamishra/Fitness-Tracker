@@ -82,6 +82,7 @@ export class App extends Component {
     return `${yyyy}-${mm}-${dd}`;
   };
 
+  // Gets total calories consumed in specified date(s)
   setCalorieTotalForWeek = () => {
     let weekCalorieTotal = {};
     let dateList = [];

@@ -26,6 +26,8 @@ export class CalorieCounterInsert extends Component {
           insertCaloriesMessageColor: "green",
         });
         document.getElementById("calorie-input").value = "";
+
+        this.props.reloadTable();
       } else if (res.data === false) {
         this.setState({
           insertCaloriesMessage: "Record could not be inserted!",

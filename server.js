@@ -59,7 +59,7 @@ app.get("/add-calorie-count", (req, res) => {
     });
 });
 
-// Gets total calories consumed by specified date(s)
+// Gets total calories consumed in specified date(s)
 app.get("/get-total-calories-by-dates", (req, res) => {
   let totalCaloriesByDay = {};
 
