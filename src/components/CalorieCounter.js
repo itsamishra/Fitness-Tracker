@@ -12,27 +12,23 @@ export class CalorieCounter extends Component {
   reloadTable = () => {
     // Creates rows for table below
     this.props.setCalorieTotalForWeek().then(() => {
-      console.log("Reloading...");
       let weekCalorieTotal = this.props.getWeekCalorieTotal();
 
+      // Creates rows of table
       let tableFirstRow = [];
-      for (let i in Object.keys(weekCalorieTotal)) {
-        tableFirstRow.push(<td style={thStyle}>{weekCalorieTotal[i].date}</td>);
-      }
-      tableFirstRow.reverse();
-      tableFirstRow.unshift(<td style={{ fontWeight: "bold" }}>Date</td>);
-
       let tableSecondRow = [];
       for (let i in Object.keys(weekCalorieTotal)) {
+        tableFirstRow.push(<td style={thStyle}>{weekCalorieTotal[i].date}</td>);
         tableSecondRow.push(
           <td style={tdStyle}>{weekCalorieTotal[i].totalCalories}</td>
         );
       }
+      tableFirstRow.reverse();
+      tableFirstRow.unshift(<td style={{ fontWeight: "bold" }}>Date</td>);
       tableSecondRow.reverse();
-      tableSecondRow.unshift(
-        <td style={{ fontWeight: "bold" }}>Calories Consumed</td>
-      );
+      tableSecondRow.unshift(<td style={{ fontWeight: "bold" }}>Calories</td>);
 
+      // Updates state with new rows
       this.setState({
         tableHeaders: tableFirstRow,
         tableRow: tableSecondRow,
