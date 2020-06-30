@@ -11,6 +11,7 @@ export class App extends Component {
     password: "",
     body: null,
     weekCalorieTotal: {},
+    dailyCalorieGoal: 0,
     development: true,
   };
 
@@ -129,9 +130,18 @@ export class App extends Component {
 
   // Displays Landing page
   displayLanding = () => {
-    this.setState({
-      body: <Landing displayCalorieCounter={this.displayCalorieCounter} />,
-    });
+    axios
+      .get(
+        `/get-personal-goals?username=${this.state.username}&password=${this.state.password}`
+      )
+      .then((res) => {
+        let calorieGoal = res.data.daily_calorie_target;
+
+        this.setState({
+          dailyCalorieGoal: calorieGoal,
+          body: <Landing displayCalorieCounter={this.displayCalorieCounter} />,
+        });
+      });
   };
 
   // Displays Calorie Counter page
@@ -144,6 +154,7 @@ export class App extends Component {
           getDateXDaysBeforeToday={this.getDateXDaysBeforeToday}
           setCalorieTotalForWeek={this.setCalorieTotalForWeek}
           getWeekCalorieTotal={this.getWeekCalorieTotal}
+          dailyCalorieGoal={this.state.dailyCalorieGoal}
         />
       ),
     });

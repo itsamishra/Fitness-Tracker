@@ -3,7 +3,13 @@ const app = express();
 const port = process.env.PORT || 4000;
 const path = require("path");
 const md5 = require("md5");
-let { Sequelize, sequelize, Account, CalorieCount } = require("./models/index");
+let {
+  Sequelize,
+  sequelize,
+  Account,
+  CalorieCount,
+  PersonalGoals,
+} = require("./models/index");
 const axios = require("axios");
 
 // Allows us to serve static react file from build/ directory
@@ -103,6 +109,30 @@ app.get("/get-total-calories-by-dates", (req, res) => {
     .catch((err) => {
       console.log(err);
       res.send(totalCaloriesByDay);
+    });
+});
+
+app.get("/get-personal-goals", (req, res) => {
+  axios
+    .get(
+      `http://:${port}/authenticate-login?username=${req.query.username}&password=${req.query.password}`
+    )
+    .then((loginRes) => {
+      // If login fails, return false
+      if (loginRes.data === false) {
+        res.send(null);
+      } else {
+        // Executes query
+        return PersonalGoals.findAll({
+          limit: 1,
+          order: [["date", "DESC"]],
+        });
+      }
+    })
+    .then((record) => {
+      console.log("Record: ");
+      console.log(record[0].dataValues);
+      res.json(record[0].dataValues);
     });
 });
 

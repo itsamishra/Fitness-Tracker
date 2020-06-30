@@ -5,33 +5,52 @@ import CalorieCounterDisplay from "./CalorieCounterDisplay";
 export class CalorieCounter extends Component {
   state = {
     goBackDestination: this.props.displayLanding,
-    tableHeaders: [],
-    tableRow: [],
+    firstRow: [],
+    secondRow: [],
+    thirdRow: [],
+    todaysCalorieBudget: 0,
   };
 
   reloadTable = () => {
     // Creates rows for table below
     this.props.setCalorieTotalForWeek().then(() => {
+      let dailyCalorieGoal = this.props.dailyCalorieGoal;
       let weekCalorieTotal = this.props.getWeekCalorieTotal();
+      let todaysCalorieBudget = 0;
 
       // Creates rows of table
       let tableFirstRow = [];
       let tableSecondRow = [];
+      let tableThirdRow = [];
       for (let i in Object.keys(weekCalorieTotal)) {
         tableFirstRow.push(<td style={thStyle}>{weekCalorieTotal[i].date}</td>);
+
         tableSecondRow.push(
           <td style={tdStyle}>{weekCalorieTotal[i].totalCalories}</td>
         );
+
+        tableThirdRow.push(
+          <td style={thStyle}>
+            {dailyCalorieGoal - weekCalorieTotal[i].totalCalories}
+          </td>
+        );
+
+        todaysCalorieBudget +=
+          dailyCalorieGoal - weekCalorieTotal[i].totalCalories;
       }
       tableFirstRow.reverse();
       tableFirstRow.unshift(<td style={{ fontWeight: "bold" }}>Date</td>);
       tableSecondRow.reverse();
       tableSecondRow.unshift(<td style={{ fontWeight: "bold" }}>Calories</td>);
+      tableThirdRow.reverse();
+      tableThirdRow.unshift(<td style={{ fontWeight: "bold" }}>Balance</td>);
 
       // Updates state with new rows
       this.setState({
-        tableHeaders: tableFirstRow,
-        tableRow: tableSecondRow,
+        firstRow: tableFirstRow,
+        secondRow: tableSecondRow,
+        thirdRow: tableThirdRow,
+        todaysCalorieBudget: todaysCalorieBudget,
       });
     });
   };
@@ -51,8 +70,11 @@ export class CalorieCounter extends Component {
           setCalorieTotalForWeek={this.props.setCalorieTotalForWeek}
           getWeekCalorieTotal={this.props.getWeekCalorieTotal}
           reloadTable={this.reloadTable}
-          tableHeaders={this.state.tableHeaders}
-          tableRow={this.state.tableRow}
+          tableHeaders={this.state.firstRow}
+          secondRow={this.state.secondRow}
+          thirdRow={this.state.thirdRow}
+          dailyCalorieGoal={this.props.dailyCalorieGoal}
+          todaysCalorieBudget={this.state.todaysCalorieBudget}
         />
         <br />
         <br />
