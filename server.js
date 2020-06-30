@@ -9,6 +9,7 @@ let {
   Account,
   CalorieCount,
   PersonalGoals,
+  WeighIn,
 } = require("./models/index");
 const axios = require("axios");
 
@@ -130,8 +131,6 @@ app.get("/get-personal-goals", (req, res) => {
       }
     })
     .then((record) => {
-      console.log("Record: ");
-      console.log(record[0].dataValues);
       res.json(record[0].dataValues);
     });
 });

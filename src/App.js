@@ -4,6 +4,7 @@ import LoginPage from "./components/LoginPage";
 import axios from "axios";
 import Landing from "./components/Landing";
 import CalorieCounter from "./components/CalorieCounter";
+import WeightTracker from "./components/WeightTracker";
 
 export class App extends Component {
   state = {
@@ -139,7 +140,12 @@ export class App extends Component {
 
         this.setState({
           dailyCalorieGoal: calorieGoal,
-          body: <Landing displayCalorieCounter={this.displayCalorieCounter} />,
+          body: (
+            <Landing
+              displayCalorieCounter={this.displayCalorieCounter}
+              displayWeightTracker={this.displayWeightTracker}
+            />
+          ),
         });
       });
   };
@@ -157,6 +163,13 @@ export class App extends Component {
           dailyCalorieGoal={this.state.dailyCalorieGoal}
         />
       ),
+    });
+  };
+
+  // Displays Weight Tracker page
+  displayWeightTracker = () => {
+    this.setState({
+      body: <WeightTracker displayLanding={this.displayLanding} />,
     });
   };
 

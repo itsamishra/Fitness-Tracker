@@ -5,6 +5,10 @@ export class Landing extends Component {
     this.props.displayCalorieCounter();
   };
 
+  weightTrackerButtonClickHandler = () => {
+    this.props.displayWeightTracker();
+  };
+
   render() {
     return (
       <div>
@@ -19,7 +23,12 @@ export class Landing extends Component {
         <button style={buttonStyle}>Fitness Tracker</button>
         <br />
         <br />
-        <button style={buttonStyle}>Weight Tracker</button>
+        <button
+          style={buttonStyle}
+          onClick={this.weightTrackerButtonClickHandler}
+        >
+          Weight Tracker
+        </button>
         <br />
         <br />
         <button style={buttonStyle}>Sleep and Wellness Tracker</button>

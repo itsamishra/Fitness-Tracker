@@ -72,6 +72,36 @@ const PersonalGoals = sequelize.define("personal_goal", {
   },
 });
 
+const WeighIns = sequelize.define("weigh_in", {
+  username: {
+    type: Sequelize.STRING,
+    references: {
+      model: "accounts",
+      key: "username",
+    },
+    allowNull: false,
+  },
+  weight_lb: {
+    type: Sequelize.FLOAT,
+    allowNull: false,
+  },
+  weight_kg: {
+    type: Sequelize.FLOAT,
+    allowNull: false,
+  },
+  date: {
+    type: Sequelize.DATEONLY,
+    allowNull: false,
+  },
+});
+
 sequelize.sync({ force: false });
 
-module.exports = { Sequelize, sequelize, Account, CalorieCount, PersonalGoals };
+module.exports = {
+  Sequelize,
+  sequelize,
+  Account,
+  CalorieCount,
+  PersonalGoals,
+  WeighIns,
+};
