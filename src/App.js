@@ -65,9 +65,9 @@ export class App extends Component {
   };
 
   addNewWeighIn = (weightLb, weightKg, date) => {
-    // return axios.get(
-    //   `add-weigh-in?username=${this.state.username}&password=${this.state.password}&weightLb=${weightLb}&weightKg=${weightKg}&date=${date}`
-    // );
+    return axios.get(
+      `add-weigh-in?username=${this.state.username}&password=${this.state.password}&weightLb=${weightLb}&weightKg=${weightKg}&date=${date}`
+    );
   };
 
   // Returns date "x" days before today's date

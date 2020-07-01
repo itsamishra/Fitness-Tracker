@@ -1,8 +1,19 @@
 import React, { Component } from "react";
 
 export class WeightTrackerInsert extends Component {
+  state = {
+    insertWeighInMessage: "",
+    insertWeighInMessageColor: "",
+  };
+
   // Submits weight to database
   submitWeight = () => {
+    // Resets message
+    this.setState({
+      insertWeighInMessage: "",
+      insertWeighInMessageColor: "",
+    });
+
     // Sets proper weight depending on if unit is lb or kg
     let unitList = document.getElementsByName("weight-unit");
     let weightLb = null;
@@ -21,14 +32,21 @@ export class WeightTrackerInsert extends Component {
       weightLb = weightKg * 2.20462;
     }
 
-    console.log(weightLb);
-    console.log(weightKg);
-    console.log(date);
-
+    // Inserts weight record
     this.props
-      .addNewWeighIn(weightLb, weightKg)
+      .addNewWeighIn(weightLb, weightKg, date)
       .then((res) => {
-        console.log(res);
+        if (res.data === true) {
+          this.setState({
+            insertWeighInMessage: "Record successfully inserted!",
+            insertWeighInMessageColor: "green",
+          });
+        } else {
+          this.setState({
+            insertWeighInMessage: "Record could not be inserted!",
+            insertWeighInMessageColor: "red",
+          });
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -39,6 +57,10 @@ export class WeightTrackerInsert extends Component {
     return (
       <div>
         <h2 style={inputLabelStyle}>Insert Weight</h2>
+
+        <div style={{ color: this.state.insertWeighInMessageColor }}>
+          <p style={messageStyle}>{this.state.insertWeighInMessage}</p>
+        </div>
 
         <h3 style={inputLabelStyle}>Weight</h3>
         <div style={inputDivStyle}>
@@ -107,6 +129,10 @@ const buttonStyle = {
   fontWeight: "bold",
   display: "block",
   margin: "auto",
+};
+
+const messageStyle = {
+  textAlign: "center",
 };
 
 export default WeightTrackerInsert;

@@ -143,7 +143,7 @@ app.get("/add-weigh-in", (req, res) => {
     .then((loginRes) => {
       // If login fails, return false
       if (loginRes.data === false) {
-        res.send(null);
+        res.send(false);
       }
       // Creates weigh in record
       else {
@@ -151,9 +151,18 @@ app.get("/add-weigh-in", (req, res) => {
           username: req.query.username,
           weight_lb: req.query.weightLb,
           weight_kg: req.query.weightKg,
-          // date: Date
+          date: req.query.date,
         });
       }
+    })
+    // Insert succeeded
+    .then(() => {
+      res.send(true);
+    })
+    // Insert failed
+    .catch((err) => {
+      console.log(err);
+      res.send(false);
     });
 });
 
