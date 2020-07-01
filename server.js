@@ -9,7 +9,7 @@ let {
   Account,
   CalorieCount,
   PersonalGoals,
-  WeighIn,
+  WeighIns,
 } = require("./models/index");
 const axios = require("axios");
 
@@ -132,6 +132,28 @@ app.get("/get-personal-goals", (req, res) => {
     })
     .then((record) => {
       res.json(record[0].dataValues);
+    });
+});
+
+app.get("/add-weigh-in", (req, res) => {
+  axios
+    .get(
+      `http://:${port}/authenticate-login?username=${req.query.username}&password=${req.query.password}`
+    )
+    .then((loginRes) => {
+      // If login fails, return false
+      if (loginRes.data === false) {
+        res.send(null);
+      }
+      // Creates weigh in record
+      else {
+        return WeighIns.create({
+          username: req.query.username,
+          weight_lb: req.query.weightLb,
+          weight_kg: req.query.weightKg,
+          // date: Date
+        });
+      }
     });
 });
 

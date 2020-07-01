@@ -66,6 +66,14 @@ const PersonalGoals = sequelize.define("personal_goal", {
     type: Sequelize.INTEGER,
     allowNull: false,
   },
+  goal_weight_lb: {
+    type: Sequelize.FLOAT,
+    allowNull: false,
+  },
+  goal_weight_kg: {
+    type: Sequelize.FLOAT,
+    allowNull: false,
+  },
   date: {
     type: Sequelize.DATEONLY,
     allowNull: false,

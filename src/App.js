@@ -64,6 +64,12 @@ export class App extends Component {
     );
   };
 
+  addNewWeighIn = (weightLb, weightKg, date) => {
+    // return axios.get(
+    //   `add-weigh-in?username=${this.state.username}&password=${this.state.password}&weightLb=${weightLb}&weightKg=${weightKg}&date=${date}`
+    // );
+  };
+
   // Returns date "x" days before today's date
   // Taken & updated from: https://www.w3resource.com/javascript-exercises/javascript-basic-exercise-3.php
   getDateXDaysBeforeToday = (daysBefore) => {
@@ -169,7 +175,13 @@ export class App extends Component {
   // Displays Weight Tracker page
   displayWeightTracker = () => {
     this.setState({
-      body: <WeightTracker displayLanding={this.displayLanding} />,
+      body: (
+        <WeightTracker
+          displayLanding={this.displayLanding}
+          addNewWeighIn={this.addNewWeighIn}
+          getDateXDaysBeforeToday={this.getDateXDaysBeforeToday}
+        />
+      ),
     });
   };
 

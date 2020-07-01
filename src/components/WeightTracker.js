@@ -6,7 +6,10 @@ export class WeightTracker extends Component {
   render() {
     return (
       <div>
-        <WeightTrackerInsert />
+        <WeightTrackerInsert
+          addNewWeighIn={this.props.addNewWeighIn}
+          getDateXDaysBeforeToday={this.props.getDateXDaysBeforeToday}
+        />
         <br />
         <br />
         <WeightTrackerDisplay />
