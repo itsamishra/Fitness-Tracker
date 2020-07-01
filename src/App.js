@@ -26,8 +26,6 @@ export class App extends Component {
         labels.push(weighInData[i].date);
         weightLbData.push(weighInData[i].weight_lb);
       }
-      console.log(labels);
-      console.log(weightLbData);
 
       this.setState(
         {

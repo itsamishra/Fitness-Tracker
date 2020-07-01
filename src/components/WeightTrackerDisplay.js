@@ -10,7 +10,6 @@ export class WeightTrackerDisplay extends Component {
       })
       .then(() => {
         let weighInData = this.props.getWeighInData();
-        console.log(weighInData);
 
         // Creates options object for graph
         let options = {
