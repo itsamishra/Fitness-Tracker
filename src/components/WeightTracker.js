@@ -12,7 +12,11 @@ export class WeightTracker extends Component {
         />
         <br />
         <br />
-        <WeightTrackerDisplay />
+        <WeightTrackerDisplay
+          getAllWeighInRecords={this.props.getAllWeighInRecords}
+          setWeighInDataState={this.props.setWeighInDataState}
+          getWeighInData={this.props.getWeighInData}
+        />
         <br />
         <br />
         <button style={buttonStyle} onClick={this.props.displayLanding}>

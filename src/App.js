@@ -13,7 +13,39 @@ export class App extends Component {
     body: null,
     weekCalorieTotal: {},
     dailyCalorieGoal: 0,
+    weightLbData: [],
+    weightLabels: [],
     development: true,
+  };
+
+  setWeighInDataState = (weighInData) => {
+    return new Promise((resolve, reject) => {
+      let labels = [];
+      let weightLbData = [];
+      for (let i in weighInData) {
+        labels.push(weighInData[i].date);
+        weightLbData.push(weighInData[i].weight_lb);
+      }
+      console.log(labels);
+      console.log(weightLbData);
+
+      this.setState(
+        {
+          weightLbData: weightLbData,
+          weightLabels: labels,
+        },
+        () => {
+          resolve();
+        }
+      );
+    });
+  };
+
+  getWeighInData = () => {
+    return {
+      weightLbData: this.state.weightLbData,
+      weightLabels: this.state.weightLabels,
+    };
   };
 
   getWeekCalorieTotal = () => {
@@ -180,9 +212,18 @@ export class App extends Component {
           displayLanding={this.displayLanding}
           addNewWeighIn={this.addNewWeighIn}
           getDateXDaysBeforeToday={this.getDateXDaysBeforeToday}
+          getAllWeighInRecords={this.getAllWeighInRecords}
+          setWeighInDataState={this.setWeighInDataState}
+          getWeighInData={this.getWeighInData}
         />
       ),
     });
+  };
+
+  getAllWeighInRecords = () => {
+    return axios.get(
+      `/get-all-weigh-ins?username=${this.state.username}&password=${this.state.password}`
+    );
   };
 
   componentDidMount() {

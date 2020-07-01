@@ -166,6 +166,29 @@ app.get("/add-weigh-in", (req, res) => {
     });
 });
 
+// Returns all Weigh In records
+app.get("/get-all-weigh-ins", (req, res) => {
+  axios
+    .get(
+      `http://:${port}/authenticate-login?username=${req.query.username}&password=${req.query.password}`
+    )
+    .then((loginRes) => {
+      // If login fails, return false
+      if (loginRes.data === false) {
+        res.send(false);
+      }
+      // Creates weigh in record
+      else {
+        return WeighIns.findAll({
+          order: [["date", "ASC"]],
+        });
+      }
+    })
+    .then((records) => {
+      res.json(records);
+    });
+});
+
 app.listen(port, () => {
   console.log(`Listening on port ${port}`);
 });
