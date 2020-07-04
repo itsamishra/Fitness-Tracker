@@ -36,6 +36,9 @@ export class WeightTrackerInsert extends Component {
     this.props
       .addNewWeighIn(weightLb, weightKg, date)
       .then((res) => {
+        // Updates chart
+        this.props.reloadChartData();
+
         if (res.data === true) {
           this.setState({
             insertWeighInMessage: "Record successfully inserted!",

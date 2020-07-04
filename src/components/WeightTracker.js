@@ -18,6 +18,18 @@ export class WeightTracker extends Component {
       .then((res) => {
         console.log("Date: ");
         console.log(res.data);
+
+        let chartData = [];
+        for (let i in res.data) {
+          chartData.push({
+            name: res.data[i]["date"],
+            weightLb: res.data[i]["weight_lb"],
+          });
+        }
+        console.log(chartData);
+        this.setState({
+          chartData: chartData,
+        });
       })
       .catch((err) => {
         console.log(`ERROR: ${err}`);
@@ -30,6 +42,7 @@ export class WeightTracker extends Component {
         <WeightTrackerInsert
           addNewWeighIn={this.props.addNewWeighIn}
           getDateXDaysBeforeToday={this.props.getDateXDaysBeforeToday}
+          reloadChartData={this.reloadChartData}
         />
         <br />
         <br />
@@ -38,7 +51,7 @@ export class WeightTracker extends Component {
           setWeighInDataState={this.props.setWeighInDataState}
           getWeighInData={this.props.getWeighInData}
           chartData={this.state.chartData}
-          reloadChart={this.reloadChart}
+          reloadChartData={this.reloadChartData}
         />
         <br />
         <br />

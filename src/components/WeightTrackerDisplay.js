@@ -11,6 +11,10 @@ import {
 } from "recharts";
 
 export class WeightTrackerDisplay extends Component {
+  componentDidMount() {
+    this.props.reloadChartData();
+  }
+
   render() {
     // Linechart to be inserted in display
     const lineChart = (
@@ -28,12 +32,11 @@ export class WeightTrackerDisplay extends Component {
           <Tooltip />
           <Legend />
 
-          <Line type="monotone" dataKey="weight" name="Weight" />
+          <Line type="monotone" dataKey="weightLb" name="Weight (lb)" />
         </LineChart>
       </ResponsiveContainer>
     );
 
-    console.log(this.props.chartData);
     return (
       <div>
         <h2 style={inputLabelStyle}>View Weigh Ins</h2>
