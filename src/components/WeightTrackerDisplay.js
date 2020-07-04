@@ -1,58 +1,43 @@
 import React, { Component } from "react";
-import Chart from "chart.js";
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from "recharts";
 
 export class WeightTrackerDisplay extends Component {
-  refreshGraph = () => {
-    this.props
-      .getAllWeighInRecords()
-      .then((records) => {
-        return this.props.setWeighInDataState(records.data);
-      })
-      .then(() => {
-        let weighInData = this.props.getWeighInData();
-
-        // Creates options object for graph
-        let options = {
-          type: "line",
-          data: {
-            labels: weighInData.weightLabels,
-            datasets: [
-              {
-                label: "Weight",
-                data: weighInData.weightLbData,
-                borderWidth: 1,
-              },
-            ],
-          },
-          options: {
-            scales: {
-              yAxes: [
-                {
-                  ticks: {
-                    reverse: false,
-                  },
-                },
-              ],
-            },
-          },
-        };
-
-        // Creates graph with above data
-        let ctx = document.getElementById("chartJSContainer").getContext("2d");
-        new Chart(ctx, options);
-      });
-  };
-
-  componentDidMount() {
-    this.refreshGraph();
-  }
-
   render() {
+    // Linechart to be inserted in display
+    const lineChart = (
+      <ResponsiveContainer
+        width="100%"
+        height={Math.min(400, 0.5 * window.screen.width)}
+      >
+        <LineChart
+          data={this.props.chartData}
+          margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+        >
+          <XAxis dataKey="name" />
+          <YAxis />
+          <CartesianGrid strokeDasharray="3 3" />
+          <Tooltip />
+          <Legend />
+
+          <Line type="monotone" dataKey="weight" name="Weight" />
+        </LineChart>
+      </ResponsiveContainer>
+    );
+
+    console.log(this.props.chartData);
     return (
       <div>
         <h2 style={inputLabelStyle}>View Weigh Ins</h2>
-
-        <canvas id="chartJSContainer"></canvas>
+        {lineChart}
       </div>
     );
   }
