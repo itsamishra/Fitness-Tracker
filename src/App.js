@@ -13,30 +13,8 @@ export class App extends Component {
     body: null,
     weekCalorieTotal: {},
     dailyCalorieGoal: 0,
-    weightLbData: [],
-    weightLabels: [],
+    weightGoal: 0,
     development: true,
-  };
-
-  setWeighInDataState = (weighInData) => {
-    return new Promise((resolve, reject) => {
-      let labels = [];
-      let weightLbData = [];
-      for (let i in weighInData) {
-        labels.push(weighInData[i].date);
-        weightLbData.push(weighInData[i].weight_lb);
-      }
-
-      this.setState(
-        {
-          weightLbData: weightLbData,
-          weightLabels: labels,
-        },
-        () => {
-          resolve();
-        }
-      );
-    });
   };
 
   getWeighInData = () => {
@@ -173,9 +151,11 @@ export class App extends Component {
       )
       .then((res) => {
         let calorieGoal = res.data.daily_calorie_target;
+        let goalWeightLb = res.data.goal_weight_lb;
 
         this.setState({
           dailyCalorieGoal: calorieGoal,
+          weightGoal: goalWeightLb,
           body: (
             <Landing
               displayCalorieCounter={this.displayCalorieCounter}
@@ -211,8 +191,8 @@ export class App extends Component {
           addNewWeighIn={this.addNewWeighIn}
           getDateXDaysBeforeToday={this.getDateXDaysBeforeToday}
           getAllWeighInRecords={this.getAllWeighInRecords}
-          setWeighInDataState={this.setWeighInDataState}
           getWeighInData={this.getWeighInData}
+          weightGoal={this.state.weightGoal}
         />
       ),
     });

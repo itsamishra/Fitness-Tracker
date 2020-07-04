@@ -32,7 +32,18 @@ export class WeightTrackerDisplay extends Component {
           <Tooltip />
           <Legend />
 
-          <Line type="monotone" dataKey="weightLb" name="Weight (lb)" />
+          <Line
+            type="monotone"
+            dataKey="weightLb"
+            name="Weight (lb)"
+            stroke="#9D38C7"
+          />
+          <Line
+            type="monotone"
+            dataKey="weightGoalLb"
+            name="Weight Goal (lb)"
+            stroke="#62C738"
+          />
         </LineChart>
       </ResponsiveContainer>
     );

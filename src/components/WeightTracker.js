@@ -4,11 +4,7 @@ import WeightTrackerDisplay from "./WeightTrackerDisplay";
 
 export class WeightTracker extends Component {
   state = {
-    chartData: [
-      { name: "Jan 1", weight: 200 },
-      { name: "Jan 2", weight: 190 },
-      { name: "Jan 3", weight: 180 },
-    ],
+    chartData: [],
   };
 
   // Realods data for chart
@@ -16,17 +12,14 @@ export class WeightTracker extends Component {
     this.props
       .getAllWeighInRecords()
       .then((res) => {
-        console.log("Date: ");
-        console.log(res.data);
-
         let chartData = [];
         for (let i in res.data) {
           chartData.push({
             name: res.data[i]["date"],
             weightLb: res.data[i]["weight_lb"],
+            weightGoalLb: this.props.weightGoal,
           });
         }
-        console.log(chartData);
         this.setState({
           chartData: chartData,
         });
@@ -48,7 +41,6 @@ export class WeightTracker extends Component {
         <br />
         <WeightTrackerDisplay
           getAllWeighInRecords={this.props.getAllWeighInRecords}
-          setWeighInDataState={this.props.setWeighInDataState}
           getWeighInData={this.props.getWeighInData}
           chartData={this.state.chartData}
           reloadChartData={this.reloadChartData}
