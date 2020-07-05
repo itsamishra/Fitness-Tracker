@@ -5,52 +5,33 @@ import CalorieCounterDisplay from "./CalorieCounterDisplay";
 export class CalorieCounter extends Component {
   state = {
     goBackDestination: this.props.displayLanding,
-    firstRow: [],
-    secondRow: [],
-    thirdRow: [],
-    todaysCalorieBudget: 0,
+    composedChartData: [],
+    todaysCalorieBalance: 0,
   };
 
-  reloadTable = () => {
-    // Creates rows for table below
+  // Reloads chart with data
+  reloadComposedChart = () => {
     this.props.setCalorieTotalForWeek().then(() => {
       let dailyCalorieGoal = this.props.dailyCalorieGoal;
       let weekCalorieTotal = this.props.getWeekCalorieTotal();
-      let todaysCalorieBudget = 0;
 
-      // Creates rows of table
-      let tableFirstRow = [];
-      let tableSecondRow = [];
-      let tableThirdRow = [];
+      let chartData = [];
+      let todaysCalorieBalance = 0;
       for (let i in Object.keys(weekCalorieTotal)) {
-        tableFirstRow.push(<td style={thStyle}>{weekCalorieTotal[i].date}</td>);
+        todaysCalorieBalance += dailyCalorieGoal;
+        todaysCalorieBalance -= weekCalorieTotal[i]["totalCalories"];
 
-        tableSecondRow.push(
-          <td style={tdStyle}>{weekCalorieTotal[i].totalCalories}</td>
-        );
-
-        tableThirdRow.push(
-          <td style={thStyle}>
-            {dailyCalorieGoal - weekCalorieTotal[i].totalCalories}
-          </td>
-        );
-
-        todaysCalorieBudget +=
-          dailyCalorieGoal - weekCalorieTotal[i].totalCalories;
+        chartData.push({
+          name: weekCalorieTotal[i]["date"],
+          calorieCount: weekCalorieTotal[i]["totalCalories"],
+          calorieGoal: dailyCalorieGoal,
+        });
       }
-      tableFirstRow.reverse();
-      tableFirstRow.unshift(<td style={{ fontWeight: "bold" }}>Date</td>);
-      tableSecondRow.reverse();
-      tableSecondRow.unshift(<td style={{ fontWeight: "bold" }}>Calories</td>);
-      tableThirdRow.reverse();
-      tableThirdRow.unshift(<td style={{ fontWeight: "bold" }}>Balance</td>);
+      chartData.reverse();
 
-      // Updates state with new rows
       this.setState({
-        firstRow: tableFirstRow,
-        secondRow: tableSecondRow,
-        thirdRow: tableThirdRow,
-        todaysCalorieBudget: todaysCalorieBudget,
+        composedChartData: chartData,
+        todaysCalorieBalance: todaysCalorieBalance,
       });
     });
   };
@@ -62,6 +43,7 @@ export class CalorieCounter extends Component {
           addNewCalorieCount={this.props.addNewCalorieCount}
           getDateXDaysBeforeToday={this.props.getDateXDaysBeforeToday}
           reloadTable={this.reloadTable}
+          reloadComposedChart={this.reloadComposedChart}
         />
         <br />
         <br />
@@ -69,12 +51,10 @@ export class CalorieCounter extends Component {
           getDateXDaysBeforeToday={this.props.getDateXDaysBeforeToday}
           setCalorieTotalForWeek={this.props.setCalorieTotalForWeek}
           getWeekCalorieTotal={this.props.getWeekCalorieTotal}
-          reloadTable={this.reloadTable}
-          tableHeaders={this.state.firstRow}
-          secondRow={this.state.secondRow}
-          thirdRow={this.state.thirdRow}
           dailyCalorieGoal={this.props.dailyCalorieGoal}
-          todaysCalorieBudget={this.state.todaysCalorieBudget}
+          composedChartData={this.state.composedChartData}
+          reloadComposedChart={this.reloadComposedChart}
+          todaysCalorieBalance={this.state.todaysCalorieBalance}
         />
         <br />
         <br />

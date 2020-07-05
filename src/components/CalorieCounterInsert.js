@@ -27,7 +27,7 @@ export class CalorieCounterInsert extends Component {
         });
         document.getElementById("calorie-input").value = "";
 
-        this.props.reloadTable();
+        this.props.reloadComposedChart();
       } else if (res.data === false) {
         this.setState({
           insertCaloriesMessage: "Record could not be inserted!",

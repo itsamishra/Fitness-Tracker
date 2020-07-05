@@ -1,13 +1,43 @@
 import React, { Component } from "react";
+import {
+  ComposedChart,
+  Line,
+  Area,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from "recharts";
 
 export class CalorieCounterDisplay extends Component {
-  state = {};
-
   componentDidMount() {
-    this.props.reloadTable();
+    this.props.reloadComposedChart();
   }
 
   render() {
+    let composedChart = (
+      <ResponsiveContainer
+        width="100%"
+        height={Math.min(400, 0.5 * window.screen.width)}
+      >
+        <ComposedChart
+          data={this.props.composedChartData}
+          margin={{ top: 20, right: 20, bottom: 20, left: 20 }}
+        >
+          <CartesianGrid stroke="#f5f5f5" />
+          <XAxis dataKey="name" />
+          <YAxis />
+          <Tooltip />
+          <Legend />
+          <Bar dataKey="calorieCount" fill="#00D7FF" />
+          <Line type="monotone" dataKey="calorieGoal" stroke="#FF2800" />
+        </ComposedChart>
+      </ResponsiveContainer>
+    );
+
     return (
       <div>
         <h2 style={inputLabelStyle}>View Calories</h2>
@@ -16,13 +46,10 @@ export class CalorieCounterDisplay extends Component {
           Daily Calorie Goal: {this.props.dailyCalorieGoal}
         </p>
         <p style={pTagStyle}>
-          Today's Calorie Budget: {this.props.todaysCalorieBudget}
+          Today's Calorie Balance: {this.props.todaysCalorieBalance}
         </p>
-        <table style={tableStyle}>
-          <tr style={trStyle}>{this.props.tableHeaders}</tr>
-          <tr style={trStyle}>{this.props.secondRow}</tr>
-          <tr style={trStyle}>{this.props.thirdRow}</tr>
-        </table>
+
+        {composedChart}
       </div>
     );
   }
